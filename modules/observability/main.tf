@@ -19,14 +19,12 @@ resource "azurerm_monitor_diagnostic_setting" "nsg_diag" {
   target_resource_id         = each.value
   log_analytics_workspace_id = azurerm_log_analytics_workspace.law.id
 
-  log {
+  enabled_log {
     category = "NetworkSecurityGroupEvent"
-    enabled  = true
   }
 
-  log {
+  enabled_log {
     category = "NetworkSecurityGroupRuleCounter"
-    enabled  = true
   }
 }
 
@@ -37,13 +35,11 @@ resource "azurerm_monitor_diagnostic_setting" "firewall_diag" {
   target_resource_id         = var.firewall_id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.law.id
 
-  log {
+  enabled_log {
     category = "AzureFirewallApplicationRule"
-    enabled  = true
   }
 
-  log {
+  enabled_log {
     category = "AzureFirewallNetworkRule"
-    enabled  = true
   }
 }
