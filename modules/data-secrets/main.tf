@@ -7,7 +7,6 @@ resource "azurerm_key_vault" "kv" {
   sku_name                  = "standard"
   enable_rbac_authorization = true
   purge_protection_enabled  = false # set true for real prod environments
-
   network_acls {
     default_action = "Deny"
     bypass         = "AzureServices"
@@ -21,6 +20,7 @@ resource "azurerm_storage_account" "sa" {
   location                 = var.location
   account_tier             = var.storage_account_tier
   account_replication_type = var.storage_replication_type
+  min_tls_version          = "TLS1_2"
 
   tags = {
     environment = var.environment
