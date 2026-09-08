@@ -29,3 +29,9 @@ variable "firewall_id" {
   type        = string
   default     = null
 }
+
+variable "enable_firewall_diagnostics" {
+  description = "Whether to create firewall diagnostic settings (plain boolean, avoids count-on-unknown-value issue)"
+  type        = bool
+  default     = false
+}

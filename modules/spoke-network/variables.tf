@@ -42,7 +42,13 @@ variable "subnets" {
 }
 
 variable "firewall_private_ip" {
-  description = "Private IP of the hub firewall — used as next hop for the default route. Set to null to skip route table creation."
+  description = "Private IP of the hub firewall — used as next hop for the default route"
   type        = string
   default     = null
+}
+
+variable "create_route_table" {
+  description = "Whether to create a route table pointing to the hub firewall (should mirror deploy_firewall at root)"
+  type        = bool
+  default     = false
 }

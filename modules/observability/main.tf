@@ -19,27 +19,31 @@ resource "azurerm_monitor_diagnostic_setting" "nsg_diag" {
   target_resource_id         = each.value
   log_analytics_workspace_id = azurerm_log_analytics_workspace.law.id
 
-  enabled_log {
+  log {
     category = "NetworkSecurityGroupEvent"
+    enabled  = true
   }
 
-  enabled_log {
+  log {
     category = "NetworkSecurityGroupRuleCounter"
+    enabled  = true
   }
 }
 
-# Diagnostic settings for the hub firewall (only created if firewall_id is provided)
+# Diagnostic settings for the hub firewall (only created if enable_firewall_diagnostics is true)
 resource "azurerm_monitor_diagnostic_setting" "firewall_diag" {
-  count                       = var.firewall_id != null ? 1 : 0
-  name                        = "diag-firewall"
-  target_resource_id          = var.firewall_id
-  log_analytics_workspace_id  = azurerm_log_analytics_workspace.law.id
+  count                      = var.enable_firewall_diagnostics ? 1 : 0
+  name                       = "diag-firewall"
+  target_resource_id         = var.firewall_id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.law.id
 
-  enabled_log {
+  log {
     category = "AzureFirewallApplicationRule"
+    enabled  = true
   }
 
-  enabled_log {
+  log {
     category = "AzureFirewallNetworkRule"
+    enabled  = true
   }
 }

@@ -6,9 +6,9 @@ resource "azurerm_virtual_network" "spoke" {
   address_space       = var.vnet_address_space
 }
 
-# Route Table — forces spoke traffic through the hub firewall (only created if firewall_private_ip is provided)
+# Route Table — forces spoke traffic through the hub firewall (only created if create_route_table is true)
 resource "azurerm_route_table" "spoke" {
-  count               = var.firewall_private_ip != null ? 1 : 0
+  count               = var.create_route_table ? 1 : 0
   name                = "rt-${var.environment}"
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -62,7 +62,7 @@ resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
 
 # Associate Route Table with subnets (only if route table was created)
 resource "azurerm_subnet_route_table_association" "rt_assoc" {
-  for_each       = var.firewall_private_ip != null ? var.subnets : {}
+  for_each       = var.create_route_table ? var.subnets : {}
   subnet_id      = azurerm_subnet.subnets[each.key].id
   route_table_id = azurerm_route_table.spoke[0].id
 }
