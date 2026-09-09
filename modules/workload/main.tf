@@ -6,6 +6,10 @@ resource "azurerm_service_plan" "asp" {
   location            = var.location
   os_type             = "Linux"
   sku_name            = var.app_service_sku
+
+  tags = {
+    environment = var.environment
+  }
 }
 
 resource "azurerm_linux_web_app" "app" {
@@ -16,6 +20,10 @@ resource "azurerm_linux_web_app" "app" {
   service_plan_id     = azurerm_service_plan.asp[0].id
 
   site_config {}
+
+  tags = {
+    environment = var.environment
+  }
 }
 
 # NOTE: vm and aks workload types are placeholders for future extension.
