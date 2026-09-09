@@ -123,3 +123,13 @@ module "governance" {
   source          = "./modules/governance"
   subscription_id = var.subscription_id
 }
+
+# Workload — compute resources per spoke
+module "workload" {
+  source              = "./modules/workload"
+  for_each            = var.spokes
+  environment         = each.key
+  resource_group_name = azurerm_resource_group.spoke_rg[each.key].name
+  location            = var.location
+  subnet_id           = module.spoke_network[each.key].subnet_ids["web"]
+}
